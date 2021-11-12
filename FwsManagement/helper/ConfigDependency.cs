@@ -1,6 +1,5 @@
 ﻿using Fws.DataAccess.Interface;
 using Fws.DataAccess.Reponsitory;
-using Fws.Service.Interface;
 using Fws.Service.Service;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -20,7 +19,6 @@ namespace FwsManagement.helper
             services.AddScoped<IUserRepository, UserRepository>();
 
             // service
-            services.AddScoped(typeof(IBaseService<>), typeof(BaseService<>));
             services.AddScoped<IUserService, UserService>();
 
             return services;

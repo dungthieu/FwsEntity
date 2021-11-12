@@ -34,7 +34,7 @@ namespace FwsManagement.Security
                     x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 }).AddJwtBearer(x =>
                 {
-                    x.RequireHttpsMetadata = false;
+                    //x.RequireHttpsMetadata = false;
                     x.SaveToken = true;
                     x.TokenValidationParameters = tokenValidationParameters;
                 });

@@ -1,7 +1,6 @@
 ﻿using Fws.DataAccess.Interface;
 using Fws.Model.Entities;
 using Fws.Model.Models;
-using Fws.Service.Interface;
 using Fws.Service.Mapper;
 using Microsoft.IdentityModel.Tokens;
 using System;

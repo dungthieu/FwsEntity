@@ -18,16 +18,37 @@ namespace FwsManagement
             Configuration = configuration;
         }
 
+
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            //add cors
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins,
+                builder =>
+                {
+                    builder.WithOrigins("http://localhost:44378")
+                    .SetIsOriginAllowed((host) => true)
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+                });
+            });
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "FwsManagement", Version = "v1" });
+                //c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                //{
+                //    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                //    Name = "Authorization",
+                //    In = ParameterLocation.Header,
+                //    Type = SecuritySchemeType.ApiKey
+                //});
             });
             // lấy 1 hàm ở helper để truyền vào đây 
             services.AddDependency();
@@ -54,7 +75,7 @@ namespace FwsManagement
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-
+            //app.UseCors(MyAllowSpecificOrigins); 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

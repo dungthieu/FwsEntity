@@ -1,6 +1,5 @@
 ﻿using Fws.Model.Entities;
 using Fws.Model.Models;
-using Fws.Service.Interface;
 using Fws.Service.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +8,7 @@ using System;
 
 namespace FwsManagement.Controllers
 {
-    [Authorize]
+    
     [Route("api/v1/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -22,7 +21,7 @@ namespace FwsManagement.Controllers
             _config = config;
         }
 
-
+        [Authorize]
         [HttpGet]
         public IActionResult GetAllUser()
         {
