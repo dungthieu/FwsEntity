@@ -39,7 +39,7 @@ namespace Fws.DataAccess.Reponsitory
             }
         }
 
-        public void SaveChages()
+        public void SaveChanges()
         {
             try
             {

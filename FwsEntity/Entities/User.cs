@@ -9,6 +9,7 @@ namespace Fws.Model.Entities
     {
         public User()
         {
+            RefreshTokens = new HashSet<RefreshToken>();
             RoleDetails = new HashSet<RoleDetail>();
         }
 
@@ -16,6 +17,7 @@ namespace Fws.Model.Entities
         public string Name { get; set; }
         public string PassWord { get; set; }
 
+        public virtual ICollection<RefreshToken> RefreshTokens { get; set; }
         public virtual ICollection<RoleDetail> RoleDetails { get; set; }
     }
 }

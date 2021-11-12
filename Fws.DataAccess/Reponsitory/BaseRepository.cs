@@ -14,13 +14,14 @@ namespace Fws.DataAccess.Reponsitory
         public DbSet<T> Dbset;
         public readonly NotesContext _context;
 
-        public BaseRepository( NotesContext context)
+        public BaseRepository(NotesContext context)
         {
             _context = context;
             // dbset chính là 1 bảng đó. thay vì về sau phải gọi context.table
             Dbset = context.Set<T>();
         }
 
+      
         public bool Delete(string id)
         {
             throw new NotImplementedException();
@@ -28,17 +29,33 @@ namespace Fws.DataAccess.Reponsitory
 
         public IEnumerable<T> GetAll()
         {
-          return Dbset.AsQueryable();
+            return Dbset.AsQueryable();
         }
 
         public T Insert(T entity)
         {
-            throw new NotImplementedException();
+            if (entity != null)
+            {
+                Dbset.Add(entity);
+                return entity;
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
         }
 
-        public T Update(T entity)
+        public virtual T Update(T entity)
         {
-            throw new NotImplementedException();
+            if (entity != null)
+            {
+                Dbset.Update(entity);
+                return entity;
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }

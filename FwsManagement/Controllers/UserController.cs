@@ -1,10 +1,7 @@
-﻿using Fws.Model.Entities;
-using Fws.Model.Models;
-using Fws.Service.Interface;
+﻿using Fws.Model.Models;
 using Fws.Service.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using System;
 
 namespace FwsManagement.Controllers
@@ -15,11 +12,9 @@ namespace FwsManagement.Controllers
     public class UserController : ControllerBase
     {
         protected IUserService _service;
-        protected IConfiguration _config;
-        public UserController(IUserService service, IConfiguration config)
+        public UserController(IUserService service)
         {
             _service = service;
-            _config = config;
         }
 
 
@@ -31,13 +26,12 @@ namespace FwsManagement.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost]
-        public IActionResult AuthenTiCation([FromBody] AuthenticateModel authen)
+        [HttpPost("login")]
+        public IActionResult AuthenTiCation([FromBody] UserLoginModel user)
         {
             try
             {
-                var keyHash = _config.GetSection("JwtConfig").GetSection("key").Value;
-                var Userlogin = _service.CheckAuthencation(authen.UserName, authen.PassWord, keyHash);
+                var Userlogin = _service.CheckAuthencation(user.UserName, user.PassWord);
 
                 if (Userlogin.Status)
                 {
@@ -52,6 +46,32 @@ namespace FwsManagement.Controllers
             }
 
 
+        }
+
+        /// <summary>
+        /// sinh ra token mới khi token cũ hết hạn
+        /// </summary>
+        /// <param name="authen"> chứa token và refresh token</param>
+        /// <returns></returns>
+        [HttpPost("generate-token")]
+        public IActionResult GenerateToken([FromBody] TokenResultModel listToken)
+        {
+            if (ModelState.IsValid)
+            {
+                UserCommon result = new UserCommon();
+                // validate 2 token
+                var validate = _service.ValidateToken(listToken);
+                if (validate.Status)
+                {
+                    return Ok(result);
+                }
+                else
+                {
+                    return BadRequest();
+                }
+
+            }
+            return BadRequest();
         }
     }
 }

@@ -18,8 +18,8 @@ namespace Fws.Model.Entities
         }
 
         public virtual DbSet<Class> Classes { get; set; }
-        public virtual DbSet<Demo> Demos { get; set; }
         public virtual DbSet<Note> Notes { get; set; }
+        public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<RoleDetail> RoleDetails { get; set; }
         public virtual DbSet<Student> Students { get; set; }
@@ -29,6 +29,7 @@ namespace Fws.Model.Entities
         {
             if (!optionsBuilder.IsConfigured)
             {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("Server=DESKTOP-4JP4J0U;Database=Notes;Trusted_Connection=True;");
             }
         }
@@ -56,21 +57,6 @@ namespace Fws.Model.Entities
                 entity.Property(e => e.TeacherPhone).HasMaxLength(50);
             });
 
-            modelBuilder.Entity<Demo>(entity =>
-            {
-                entity.ToTable("Demo");
-
-                entity.Property(e => e.Id)
-                    .HasMaxLength(10)
-                    .HasColumnName("id")
-                    .IsFixedLength(true);
-
-                entity.Property(e => e.NAme)
-                    .HasMaxLength(10)
-                    .HasColumnName("nAME")
-                    .IsFixedLength(true);
-            });
-
             modelBuilder.Entity<Note>(entity =>
             {
                 entity.ToTable("Note");
@@ -89,6 +75,41 @@ namespace Fws.Model.Entities
                 entity.Property(e => e.Name).HasMaxLength(50);
 
                 entity.Property(e => e.Score).HasColumnType("decimal(18, 0)");
+            });
+
+            modelBuilder.Entity<RefreshToken>(entity =>
+            {
+                entity.ToTable("RefreshToken");
+
+                entity.Property(e => e.Id)
+                    .HasMaxLength(36)
+                    .IsUnicode(false)
+                    .HasColumnName("ID")
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.ExpiryDate).HasColumnType("datetime");
+
+                entity.Property(e => e.JwtId)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Token)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.UserId)
+                    .IsRequired()
+                    .HasMaxLength(36)
+                    .IsUnicode(false)
+                    .IsFixedLength(true);
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.RefreshTokens)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_RefreshToken_Users");
             });
 
             modelBuilder.Entity<Role>(entity =>

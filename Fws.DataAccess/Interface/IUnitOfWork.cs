@@ -8,6 +8,6 @@ namespace Fws.DataAccess.Interface
 {
     public interface IUnitOfWork : IDisposable
     {
-        void SaveChages();
+        public void SaveChanges();
     }
 }

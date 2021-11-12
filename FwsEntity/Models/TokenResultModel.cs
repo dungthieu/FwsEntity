@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Fws.Model.Models
 {
-    public class UserLoginModel
+    public class TokenResultModel
     {
-        public String UserName { get; set; }
-        public string PassWord { get; set; }
+        public string Token { get; set; }
+        public string RefreshToken { get; set; }
     }
 }

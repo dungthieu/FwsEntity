@@ -15,9 +15,8 @@ namespace Fws.Model.Models
     }
     public class UserCommon
     {
-        public string Name { get; set; }
-        public string PassWord { get; set; }
         public string Token { get; set; }
+        public string RefreshToken { get; set; }
         public string Message { get; set; }
         public bool Status { get; set; }
 
