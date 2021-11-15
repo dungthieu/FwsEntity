@@ -1,12 +1,13 @@
 ﻿using Fws.Model.Models;
 using Fws.Service.Service;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
 namespace FwsManagement.Controllers
 {
-    [Authorize]
+
     [Route("api/v1/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -17,7 +18,7 @@ namespace FwsManagement.Controllers
             _service = service;
         }
 
-
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet]
         public IActionResult GetAllUser()
         {
@@ -53,6 +54,7 @@ namespace FwsManagement.Controllers
         /// </summary>
         /// <param name="authen"> chứa token và refresh token</param>
         /// <returns></returns>
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost("generate-token")]
         public IActionResult GenerateToken([FromBody] TokenResultModel listToken)
         {

@@ -93,7 +93,7 @@ namespace Fws.Service.Service
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
 
                     }),
-                Expires = DateTime.UtcNow.AddHours(3),
+                Expires = DateTime.UtcNow.AddMinutes(5),
                 SigningCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
             };
